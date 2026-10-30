@@ -63,7 +63,7 @@ dnap.filterContacts(notSameRes=True, notConsecutiveRes=False, removeIsolatedNode
 
 dnap.calcCor(ncores=4, verbose=2)
 
-numSampledFrames = 25000
+numSampledFrames = 50000
 dnap.setNumSampledFrames(numSampledFrames)
 dnap.calcCartesian(backend="openmp")
 
