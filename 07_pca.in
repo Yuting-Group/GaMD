@@ -1,0 +1,25 @@
+parm pro.r1_solv.prmtop
+trajin 06_gamd_protein.nc 0 last 5
+
+autoimage anchor @CA
+rms first @N,C,CA
+average @N,C,CA crdset trajaverage
+createcrd trajectory
+run
+
+#creating covariance matrix and projecting
+crdaction trajectory rms ref trajaverage @N,C,CA
+crdaction trajectory matrix covar name covmatrix @N,C,CA
+runanalysis diagmatrix covmatrix out evecs.dat vecs 10 name eigenvectors nmwiz nmwizvecs 10 nmwizfile normalmodes.nmd nmwizmask @N,C,CA
+crdaction trajectory projection proj modes eigenvectors beg 1 end 10 @N,C,CA out pca.dat crdframes 1,30001  #this number changes depending on the number of frames in your system
+hist proj:1 bins 100 out hist.agr norm name proj1
+run
+
+clear all
+readdata evecs.dat name eigenvectors
+parm pro.r1_solv.prmtop
+parmstrip !(@N,C,CA)
+parmwrite out modes.prmtop
+runanalysis modes name eigenvectors trajout modes01.nc pcmin -150 pcmax 150 tmode 1 trajoutmask @N,C,CA trajoutfmt netcdf
+#the modes.prmtop can be read in a visualization software to ‘see’ the motions that correspond to each primary component  
+

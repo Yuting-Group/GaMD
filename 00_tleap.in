@@ -1,0 +1,11 @@
+source leaprc.RNA.OL3 
+source leaprc.DNA.bsc1
+source leaprc.protein.ff14SB
+source leaprc.water.tip3p
+loadamberparams frcmod.ionsjc_tip3p
+r1 = loadpdb 4oo8.pdb
+saveamberparm r1 r1.prmtop r1.inpcrd
+solvatebox r1 TIP3PBOX 16.0
+addions r1 Na+ 0
+saveamberparm r1 r1_solv.prmtop r1_solv.inpcrd
+quit
